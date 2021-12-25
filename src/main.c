@@ -3,13 +3,16 @@
 
 #include "raylib.h"
 #define NK_INCLUDE_DEFAULT_ALLOCATOR
+#define NK_INCLUDE_STANDARD_VARARGS
 #include "nuklear.h"
 
 #include "simulation.h"
 
 const Vector2 g_window_size = {1920, 1080};
 
-bool g_running = true;
+bool g_running = false;
+int g_generation = 1;
+
 float g_speed = 1.0f;
 Camera2D g_camera;
 float g_camera_speed = 300.0f;
@@ -61,6 +64,7 @@ int main()
         {
             sim_run();
             elapsed_time = GetTime();
+            g_generation++;
         }
 
         BeginDrawing();
@@ -97,7 +101,7 @@ void render()
     if (nk_begin(&g_nk_ctx, "Menu", (struct nk_rect){0, 0, 300, 160}, flags))
     {
         nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
-        if (nk_button_label(&g_nk_ctx, "Pause"))
+        if (nk_button_label(&g_nk_ctx, g_running ? "Pause" : "Start"))
         {
             g_running = !g_running;
         }
@@ -109,6 +113,8 @@ void render()
             nk_layout_row_push(&g_nk_ctx, 240);
             nk_slider_float(&g_nk_ctx, 1, &g_speed, 10, 0.5);
         }
+
+        nk_value_int(&g_nk_ctx, "Gen: ", g_generation);
     }
     nk_end(&g_nk_ctx);
 
