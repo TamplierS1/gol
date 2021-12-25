@@ -115,6 +115,14 @@ void render()
         }
 
         nk_value_int(&g_nk_ctx, "Gen: ", g_generation);
+
+        nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
+        if (nk_button_label(&g_nk_ctx, "Nuke"))
+        {
+            sim_nuke();
+            g_generation = 1;
+            g_running = false;
+        }
     }
     nk_end(&g_nk_ctx);
 
