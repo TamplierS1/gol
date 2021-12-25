@@ -11,6 +11,7 @@ bool g_current_world[WIDTH * HEIGHT];
 bool g_future_world[WIDTH * HEIGHT];
 Vector2 g_cell_size = {8, 8};
 
+// TODO: the cells wrap around.
 static bool is_outside_bounds(int x, int y)
 {
     return x < 0 || x > WIDTH || y < 0 || y > HEIGHT;
