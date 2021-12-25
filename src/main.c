@@ -150,9 +150,17 @@ void render_gui()
         case NK_COMMAND_RECT_MULTI_COLOR:
             break;
         case NK_COMMAND_CIRCLE:
+        {
+            struct nk_command_circle* c = (struct nk_command_circle*)cmd;
+            DrawCircleLines(c->x, c->y, c->w, to_ray_color(c->color));
             break;
+        }
         case NK_COMMAND_CIRCLE_FILLED:
+        {
+            struct nk_command_circle_filled* c = (struct nk_command_circle_filled*)cmd;
+            DrawCircle(c->x + c->w / 2, c->y + c->h / 2, 8, to_ray_color(c->color));
             break;
+        }
         case NK_COMMAND_ARC:
             break;
         case NK_COMMAND_ARC_FILLED:
