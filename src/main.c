@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "raylib.h"
 #define NK_INCLUDE_DEFAULT_ALLOCATOR
@@ -91,6 +92,8 @@ Color to_ray_color(struct nk_color color)
 
 void render()
 {
+    // TODO: add an optional grid.
+
     BeginMode2D(g_camera);
     sim_render();
     EndMode2D();
@@ -98,7 +101,7 @@ void render()
     enum nk_panel_flags flags =
         NK_WINDOW_BORDER | NK_WINDOW_NO_SCROLLBAR | NK_WINDOW_MOVABLE;
 
-    if (nk_begin(&g_nk_ctx, "Menu", (struct nk_rect){0, 0, 300, 160}, flags))
+    if (nk_begin(&g_nk_ctx, "Menu", (struct nk_rect){0, 0, 300, 300}, flags))
     {
         nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
         if (nk_button_label(&g_nk_ctx, g_running ? "Pause" : "Start"))
@@ -106,7 +109,7 @@ void render()
             g_running = !g_running;
         }
 
-        nk_layout_row_begin(&g_nk_ctx, NK_STATIC, 40, 2);
+        nk_layout_row_begin(&g_nk_ctx, NK_STATIC, 20, 2);
         {
             nk_layout_row_push(&g_nk_ctx, 50);
             nk_label(&g_nk_ctx, "Speed", NK_TEXT_LEFT);
@@ -123,6 +126,19 @@ void render()
             g_generation = 1;
             g_running = false;
         }
+
+        nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
+        nk_text(&g_nk_ctx, "Controls:", 8, NK_TEXT_LEFT);
+        nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
+        nk_text(&g_nk_ctx, "\tRMB - place a living cell.",
+                strlen("\tRMB - place a living cell."), NK_TEXT_LEFT);
+        nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
+        nk_text(&g_nk_ctx, "\tn - zoom out.", strlen("\tn - zoom out."), NK_TEXT_LEFT);
+        nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
+        nk_text(&g_nk_ctx, "\tm - zoom int.", strlen("\tm - zoom int."), NK_TEXT_LEFT);
+        nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
+        nk_text(&g_nk_ctx, "\tWASD - move the camera.",
+                strlen("\tWASD - move the camera."), NK_TEXT_LEFT);
     }
     nk_end(&g_nk_ctx);
 
@@ -240,11 +256,11 @@ void handle_input(float delta)
         sim_make_alive(mouse_pos.x, mouse_pos.y);
     }
 
-    if (IsKeyPressed(KEY_COMMA))
+    if (IsKeyPressed(KEY_N))
     {
         g_camera.zoom /= 2.0f;
     }
-    else if (IsKeyPressed(KEY_PERIOD))
+    else if (IsKeyPressed(KEY_M))
     {
         g_camera.zoom *= 2.0f;
     }
