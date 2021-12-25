@@ -83,6 +83,11 @@ void sim_render()
     }
 }
 
+void sim_nuke()
+{
+    sim_init_world();
+}
+
 void sim_make_alive(int x, int y)
 {
     if (is_outside_bounds(x, y))
