@@ -5,7 +5,7 @@
 
 void sim_init_world();
 void sim_run();
-void sim_render();
+int sim_render();
 void sim_nuke();
 
 void sim_make_alive(int x, int y);

@@ -4,14 +4,13 @@
 
 #include "simulation.h"
 
-#define WIDTH 400
-#define HEIGHT 400
+#define WIDTH 1000
+#define HEIGHT 1000
 
 bool g_current_world[WIDTH * HEIGHT];
 bool g_future_world[WIDTH * HEIGHT];
 Vector2 g_cell_size = {8, 8};
 
-// TODO: the cells wrap around.
 static bool is_outside_bounds(int x, int y)
 {
     return x < 0 || x > WIDTH || y < 0 || y > HEIGHT;
@@ -69,8 +68,9 @@ void sim_run()
     memcpy(&g_current_world, &g_future_world, WIDTH * HEIGHT);
 }
 
-void sim_render()
+int sim_render()
 {
+    int num_of_live_cells = 0;
     for (int x = 0; x < WIDTH; x++)
     {
         for (int y = 0; y < HEIGHT; y++)
@@ -79,9 +79,11 @@ void sim_render()
             {
                 DrawRectangle(x * g_cell_size.x, y * g_cell_size.y, g_cell_size.x,
                               g_cell_size.y, WHITE);
+                num_of_live_cells++;
             }
         }
     }
+    return num_of_live_cells;
 }
 
 void sim_nuke()

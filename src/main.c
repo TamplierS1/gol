@@ -13,6 +13,7 @@ const Vector2 g_window_size = {1920, 1080};
 
 bool g_running = false;
 int g_generation = 1;
+int g_num_of_live_cells = 0;
 
 float g_speed = 1.0f;
 Camera2D g_camera;
@@ -92,10 +93,8 @@ Color to_ray_color(struct nk_color color)
 
 void render()
 {
-    // TODO: add an optional grid.
-
     BeginMode2D(g_camera);
-    sim_render();
+    g_num_of_live_cells = sim_render();
     EndMode2D();
 
     enum nk_panel_flags flags =
@@ -118,6 +117,8 @@ void render()
         }
 
         nk_value_int(&g_nk_ctx, "Gen: ", g_generation);
+        nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
+        nk_value_int(&g_nk_ctx, "Alive: ", g_num_of_live_cells);
 
         nk_layout_row_dynamic(&g_nk_ctx, 20, 1);
         if (nk_button_label(&g_nk_ctx, "Nuke"))
